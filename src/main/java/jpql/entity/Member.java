@@ -64,4 +64,13 @@ public class Member {
         this.team = team;
         team.getMembers().add(this);
     }
+
+    @Override
+    public String toString() {
+        return "Member{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", age=" + age +
+                '}';
+    }
 }

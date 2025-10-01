@@ -22,7 +22,10 @@ public class Main {
 
 //            createTypedQueryExam(em);
 //            getResult(em);
-            projection(em);
+//            projection(em);
+            paingAPI(em, 1);
+            paingAPI(em, 2);
+            paingAPI(em, 3);
 
             tx.commit();
         } catch (Exception e) {
@@ -102,7 +105,7 @@ public class Main {
      *  - SELECT 절에서 조회할 대상을 지정하는 것
      *  - 프로젝션 대상: Entity, 임베디드 타입, 스칼라 타입(숫자, 문자 등 기본 데이터 타입)
      * */
-    public static void projection(EntityManager em) {
+    public static void projection(EntityManager em) throws Exception {
 
         // entity 프로젝션
         List<Member> resultList = em.createQuery("select m from Member m", Member.class).getResultList();
@@ -136,5 +139,30 @@ public class Main {
         for (MemberDto memberDto : resultList5) {
             System.out.println(">> member ==> " + memberDto.getName());
         }
+    }
+
+    /**
+     * jpql 페이징
+     * */
+    public static void paingAPI(EntityManager em, int pageNum) throws Exception {
+        // 실습용 데이터 입력
+        /*for(int i=21; i<=100; i++) {
+            Member m = new Member();
+            m.setAge(i);
+            m.setName("MEM" + i);
+            em.persist(m);
+        }*/
+
+        int pageSize = 10;
+        int start = (pageNum - 1) * pageSize; // 0, 10, 20, 30 ...
+
+        List<Member> selectMFromMemberM = em.createQuery("select m from Member m order by age desc", Member.class).setFirstResult(start)
+                                            .setMaxResults(pageSize)
+                                            .getResultList();
+        int i=1;
+        for (Member member : selectMFromMemberM) {
+            System.out.println((i++) + ") member = " + member);
+        }
+
     }
 }
