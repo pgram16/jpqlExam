@@ -1,4 +1,4 @@
-package jpql;
+package jpql.entity;
 
 import javax.persistence.*;
 import java.util.ArrayList;
